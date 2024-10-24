@@ -23,7 +23,7 @@ Li6400RemarkReshuffle <- function(remark) {
   stopifnot(names(remark$remarks) %in% c("Remarks", "RemarkRow"))
 
   # create a continuous sequence from first to last remark row
-  full.seq <- seq(from = min(remark$remarks$RemarkRow), to = max(remark$remarks$RemarkRow), by = 1)
+  full.seq <- seq(from = min(remark$remarks$RemarkRow), to = max(as.numeric(remark$data$Obs)), by = 1)
 
   # merge full sequence with remarks
   r <- merge(as.data.frame(full.seq), remark$remarks,
