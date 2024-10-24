@@ -23,6 +23,10 @@ Li6400Import <- function(file, sep = "\t") {
   # look for phrase "$STARTOFDATA$" to get row after which import should start
   start.data <- grep("STARTOFDATA", x)
 
+  if (length(start.data) > 1) {
+    message("File has multiple starts. Obs likely will not be unique. Use Li6400RemarkReshuffle with caution.")
+  }
+
   y <- utils::read.csv(file,
                        skip = start.data,
                        #sep = "\t",
