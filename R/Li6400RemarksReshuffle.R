@@ -1,5 +1,5 @@
 FillForward <- function(x) {
-  #' Fill NA elements in a vector using the last non-NA entry without using \code{zoo:na.locf} 
+  #' Fill NA elements in a vector using the last non-NA entry without using \code{zoo:na.locf}
   #'
   #' Fills NA elements in a vector using the last non-NA element preceeding each missing element. Follows \href{https://stat.ethz.ch/pipermail/r-help/2008-July/169195.html}{this suggestion}.
   #'
@@ -19,17 +19,17 @@ Li6400RemarkReshuffle <- function(remark) {
   #' @return Data.frame with a new vector ForwardFilledRemarks in which gaps between remarks are filled with the last, previous remark.
   #' @seealso \code{\link{Li6400Import}}
   #' @export
-  
-  stopifnot(names(remark) %in% c("Remarks", "RemarkRow"))
+
+  stopifnot(names(remark$remarks) %in% c("Remarks", "RemarkRow"))
 
   # create a continuous sequence from first to last remark row
-  full.seq <- seq(from = min(remark$RemarkRow), to = max(remark$RemarkRow), by = 1)
+  full.seq <- seq(from = min(remark$remarks$RemarkRow), to = max(remark$remarks$RemarkRow), by = 1)
 
   # merge full sequence with remarks
-  r <- merge(as.data.frame(full.seq), remark,
-           by.x = "full.seq",
-           by.y = "RemarkRow",
-           all.x = TRUE)
+  r <- merge(as.data.frame(full.seq), remark$remarks,
+             by.x = "full.seq",
+             by.y = "RemarkRow",
+             all.x = TRUE)
   names(r) <- gsub("full.seq", "Row", names(r))
   r$ForwardFilledRemarks <- FillForward(r$Remarks)
   return(r)
