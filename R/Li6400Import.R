@@ -23,15 +23,36 @@ Li6400Import <- function(file, sep = "\t") {
   # look for phrase "$STARTOFDATA$" to get row after which import should start
   start.data <- grep("STARTOFDATA", x)
 
+
+
   if (length(start.data) > 1) {
     message("File has multiple starts. Obs likely will not be unique. Use Li6400RemarkReshuffle with caution.")
+
+    connect <- file(file, "r")
+    start.data.many <- 1
+    while (TRUE) {
+      line = readLines(connect, n = 1)
+      if (line == "$STARTOFDATA$" ) {
+        break
+      }
+      start.data.many = start.data.many + 1
+    }
+    close(connect)
+
+    y <- utils::read.csv(file,
+                         skip = start.data.many,
+                         #sep = "\t",
+                         sep = sep,
+                         na.strings = c("NA", ""))
   }
 
-  y <- utils::read.csv(file,
-                       skip = start.data,
-                       #sep = "\t",
-                       sep = sep,
-                       na.strings = c("NA", ""))
+  else{
+    y <- utils::read.csv(file,
+                         skip = start.data,
+                         #sep = "\t",
+                         sep = sep,
+                         na.strings = c("NA", ""))
+  }
 
   # assemble full date based on date in file header, as Li6400 only records time in the HHMMSS field
   the.day <- format(the.date, "%Y-%m-%d")
