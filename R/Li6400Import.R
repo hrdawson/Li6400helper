@@ -24,7 +24,7 @@ Li6400Import <- function(file, sep = "\t") {
   start.data <- grep("STARTOFDATA", x)
 
   if (length(start.data) > 1) {
-    message(paste0(file, "has multiple starts. Obs likely will not be unique. Use Li6400RemarkReshuffle with caution."))
+    message(paste0(file, " has multiple starts. Obs likely will not be unique. Use Li6400RemarkReshuffle with caution."))
 
     connect <- file(file, "r")
     start.data.many <- 1
